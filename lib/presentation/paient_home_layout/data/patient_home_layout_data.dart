@@ -7,17 +7,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../notification_module/notification_module/notification_screen.dart';
+
 abstract class PatientHomeLayoutData {
   static List<String> titles = [
     AppText.healthRecord,
     AppText.medicalHistory,
     AppText.profile,
     AppText.faqs,
-    AppText.communication
+    AppText.communication,
+    AppText.appointments,
   ];
   static List<List<Widget>> appBarActions(BuildContext context) => [
+        [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const NotificationScreen()));
+              },
+              icon: const Icon(Icons.notifications))
+        ],
         [IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))],
-        [IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))],
+        [
+          IconButton(
+            onPressed: () {
+              context.setLocale(context.locale == const Locale('ar')
+                  ? const Locale('en')
+                  : const Locale('ar'));
+            },
+            icon: SvgPicture.asset(
+              AppIcon.language,
+              colorFilter:
+                  const ColorFilter.mode(AppColor.white, BlendMode.srcIn),
+            ),
+          ),
+        ],
         [
           IconButton(
             onPressed: () {
@@ -68,14 +92,14 @@ abstract class PatientHomeLayoutData {
     return BottomNavigationBarItem(
       activeIcon: SvgPicture.asset(
         imagePath,
-        height: 32,
-        width: 32,
+        height: 25.h,
+        width: 25.w,
         colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
       ),
       icon: SvgPicture.asset(
         imagePath,
-        height: 32,
-        width: 32,
+        height: 25.h,
+        width: 25.w,
         colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
       ),
       label: context.tr(label),
@@ -109,6 +133,11 @@ abstract class PatientHomeLayoutData {
           context: context,
           label: AppText.communication,
           imagePath: AppIcon.contactUs,
+        ),
+        customBottomNavBarItem(
+          context: context,
+          label: AppText.appointments,
+          imagePath: AppIcon.calendar,
         ),
       ];
 }

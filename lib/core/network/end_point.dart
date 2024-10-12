@@ -6,6 +6,7 @@ abstract class EndPoint {
   // verifyEmail
   static String verifyUser({required String email, required String otp}) =>
       "/auth/verifyToken/$otp/$email";
+
   static String resendVerifyEmail({required String email}) =>
       "/auth/resend-otp/$email";
 
@@ -38,4 +39,10 @@ abstract class EndPoint {
 
   ///patients/health-records
   static String submitHealthRecords = "/patients/health-records";
+
+  ///appointments
+  static String appointments = "/appointments";
+
+  ///doctors
+  static String doctors = "/doctors";
 }

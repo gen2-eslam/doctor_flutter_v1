@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:doctor_flutter_v1/config/routes/app_page.dart';
 import 'package:doctor_flutter_v1/config/routes/app_router.dart';
@@ -6,6 +8,7 @@ import 'package:doctor_flutter_v1/core/services/cache/app_cache_key.dart';
 import 'package:doctor_flutter_v1/core/services/cache/cache_service.dart';
 
 import 'package:gen_extension/gen_extension.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 //Dio Helper That's Connect and Talk to API.
 class DioHelper {
@@ -34,6 +37,12 @@ class DioHelper {
       ),
     )..interceptors.addAll([
         InterceptorsWrapper(
+          onRequest: (options, handler) {
+            print("REQUEST[${options.method}] => PATH: ${options.path}");
+            print(options.headers);
+            // Do something before request is sent
+            return handler.next(options); //continue
+          },
           onError: (error, handle) {
             if (error.response!.data['error'] == "Unauthenticated" ||
                 error.response!.statusCode == 401) {
@@ -45,6 +54,11 @@ class DioHelper {
           },
         ),
       ]);
+    dio.interceptors.add(PrettyDioLogger(
+
+      request: true,
+      requestBody: true,
+    ));
     //
   }
 
@@ -56,10 +70,13 @@ class DioHelper {
     String? token,
     Options? options,
   }) async {
+    log(CacheService.getString(key: AppCacheKey.lang).toString());
+
     dio.options.headers = {
       'Authorization': 'Bearer ${token ?? ''}',
       'lang': CacheService.getString(key: AppCacheKey.lang) ?? 'en',
     };
+
     // dio.options.headers = {
     //   'x-auth-token': token ?? '',
     //   'Content-Type': 'application/json',

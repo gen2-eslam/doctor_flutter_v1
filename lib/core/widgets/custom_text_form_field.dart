@@ -17,18 +17,21 @@ class CustomTextFormFeild extends StatefulWidget {
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
-
+  final Function()? onTap;
+  final bool readOnly;
   final TextEditingController? controller;
   const CustomTextFormFeild({
     super.key,
     required this.text,
     this.prefixIcon,
+    this.readOnly = false,
     this.keyboardType,
     this.showTitle = true,
     this.isPassword = false,
     this.validator,
     this.controller,
     this.onChanged,
+    this.onTap,
     this.maxLines = 1,
     this.borderRadius = 16,
   });
@@ -50,72 +53,77 @@ class _CustomTextFormFeildState extends State<CustomTextFormFeild> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Visibility(
-          visible: widget.showTitle,
-          replacement: const SizedBox.shrink(),
-          child: Column(
-            children: [
-              CustomText(
-                text: context.tr(widget.text),
-                style: AppStyle.textStyle14RegularKufram,
-                color: AppColor.blue,
-              ),
-              SizedBox(
-                height: 8.r,
-              ),
-            ],
-          ),
-        ),
-        TextFormField(
-          keyboardType: widget.isPassword
-              ? TextInputType.visiblePassword
-              : widget.keyboardType,
-          obscureText: widget.isPassword ? obscureText : false,
-          validator: widget.validator,
-          onChanged: widget.onChanged,
-          controller: widget.controller,
-          maxLines: widget.maxLines,
-          style:
-              AppStyle.textStyle14RegularKufram.copyWith(color: AppColor.blue),
-          decoration: InputDecoration(
-            hintText: context.tr(widget.text),
-            filled: true,
-            fillColor: AppColor.white.withOpacity(0.45),
-            contentPadding: EdgeInsets.all(8.r),
-            labelStyle: AppStyle.textStyle14RegularKufram,
-            hintStyle: AppStyle.textStyle14RegularKufram.copyWith(
-              color: AppColor.grayClr,
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Visibility(
+            visible: widget.showTitle,
+            replacement: const SizedBox.shrink(),
+            child: Column(
+              children: [
+                CustomText(
+                  text: context.tr(widget.text),
+                  style: AppStyle.textStyle14RegularKufram,
+                  color: AppColor.blue,
+                ),
+                SizedBox(
+                  height: 8.r,
+                ),
+              ],
             ),
-            prefixIcon: widget.prefixIcon != null
-                ? Icon(
-                    widget.prefixIcon,
-                    color: AppColor.blue,
-                  )
-                : null,
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    icon: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: AppColor.blue,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                  )
-                : null,
-            border: border(context),
-            enabledBorder: border(context),
-            focusedBorder: border(context),
-            errorBorder: border(context),
-            focusedErrorBorder: border(context),
           ),
-        ),
-      ],
+          TextFormField(
+            readOnly: widget.readOnly,
+            onTap: widget.onTap,
+            keyboardType: widget.isPassword
+                ? TextInputType.visiblePassword
+                : widget.keyboardType,
+            obscureText: widget.isPassword ? obscureText : false,
+            validator: widget.validator,
+            onChanged: widget.onChanged,
+            controller: widget.controller,
+            maxLines: widget.maxLines,
+            style: AppStyle.textStyle14RegularKufram
+                .copyWith(color: AppColor.blue),
+            decoration: InputDecoration(
+              hintText: context.tr(widget.text),
+              filled: true,
+              fillColor: AppColor.white.withOpacity(0.45),
+              contentPadding: EdgeInsets.all(8.r),
+              labelStyle: AppStyle.textStyle14RegularKufram,
+              hintStyle: AppStyle.textStyle14RegularKufram.copyWith(
+                color: AppColor.grayClr,
+              ),
+              prefixIcon: widget.prefixIcon != null
+                  ? Icon(
+                      widget.prefixIcon,
+                      color: AppColor.blue,
+                    )
+                  : null,
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                      icon: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: AppColor.blue,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                    )
+                  : null,
+              border: border(context),
+              enabledBorder: border(context),
+              focusedBorder: border(context),
+              errorBorder: border(context),
+              focusedErrorBorder: border(context),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

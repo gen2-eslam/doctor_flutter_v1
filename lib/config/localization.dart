@@ -83,6 +83,10 @@ abstract class AppText {
   static const faqs = 'faqs';
 
   static const exit = 'exit';
+  static const blood_pressure = 'blood_pressure';
+  static const heart_rate = 'heart_rate';
+  // static const temperature = 'temperature';
+  static const treatment_plan = 'treatment_plan';
 
   static const ok = 'ok';
 
@@ -91,10 +95,16 @@ abstract class AppText {
   static const loading = 'loading';
 
   static const dataNotFound = 'dataNotFound';
+  static const submitNewRecord = 'submitNewRecord';
+  static const submitAppointment = 'submitAppointment';
 
   static const tryAgain = 'tryAgain';
   static const AllDoctors = 'AllDoctors';
   static const AllPaients = "AllPatients";
   //pleaseEnterDescription
   static const pleaseEnterDescription = 'pleaseEnterDescription';
+  static const doctorid = 'doctor_id';
+  static const appointmentDate = 'appointmentDate';
+  // static const appointments = 'appointments';
+  // static const communication = 'communication';
 }

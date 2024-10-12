@@ -7,55 +7,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../core/services/cache/app_cache_key.dart';
+import '../../../core/services/cache/cache_service.dart';
+import '../../../notification_module/notification_module/notification_screen.dart';
+
 abstract class DoctorHomeLayoutData {
   static List<String> titles = [
     AppText.AllPaients,
-    AppText.AllDoctors,
+    // AppText.AllDoctors,
     AppText.profile,
     AppText.faqs,
-    AppText.communication
+    AppText.communication,
+    AppText.appointments,
   ];
   static List<List<Widget>> appBarActions(BuildContext context) => [
-        [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
-        [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
         [
           IconButton(
-            onPressed: () {
-              context.setLocale(context.locale == const Locale('ar')
-                  ? const Locale('en')
-                  : const Locale('ar'));
-            },
-            icon: SvgPicture.asset(
-              AppIcon.language,
-              colorFilter: ColorFilter.mode(AppColor.white, BlendMode.srcIn),
-            ),
-          ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const NotificationScreen()));
+              },
+              icon: const Icon(Icons.notifications))
+        ],
+        [IconButton(onPressed: () {}, icon: Icon(Icons.notifications))],
+        [
+          LocalizationButton(),
         ],
         [
-          IconButton(
-            onPressed: () {
-              context.setLocale(context.locale == const Locale('ar')
-                  ? const Locale('en')
-                  : const Locale('ar'));
-            },
-            icon: SvgPicture.asset(
-              AppIcon.language,
-              colorFilter: ColorFilter.mode(AppColor.white, BlendMode.srcIn),
-            ),
-          ),
+          LocalizationButton(),
         ],
         [
-          IconButton(
-            onPressed: () {
-              context.setLocale(context.locale == const Locale('ar')
-                  ? const Locale('en')
-                  : const Locale('ar'));
-            },
-            icon: SvgPicture.asset(
-              AppIcon.language,
-              colorFilter: ColorFilter.mode(AppColor.white, BlendMode.srcIn),
-            ),
-          ),
+          LocalizationButton(),
         ]
       ];
   static BottomNavigationBarItem customBottomNavBarItem(
@@ -87,11 +69,11 @@ abstract class DoctorHomeLayoutData {
           label: AppText.AllPaients,
           imagePath: AppIcon.allPatients,
         ),
-        customBottomNavBarItem(
-          context: context,
-          label: AppText.AllDoctors,
-          imagePath: AppIcon.allDoctor,
-        ),
+        // customBottomNavBarItem(
+        //   context: context,
+        //   label: AppText.AllDoctors,
+        //   imagePath: AppIcon.allDoctor,
+        // ),
         customBottomNavBarItem(
           context: context,
           label: AppText.profile,
@@ -107,5 +89,36 @@ abstract class DoctorHomeLayoutData {
           label: AppText.communication,
           imagePath: AppIcon.contactUs,
         ),
+        customBottomNavBarItem(
+          context: context,
+          label: AppText.appointments,
+          imagePath: AppIcon.calendar,
+        ),
       ];
+}
+
+class LocalizationButton extends StatelessWidget {
+  const LocalizationButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        context.setLocale(context.locale == const Locale('ar')
+            ? const Locale('en')
+            : const Locale('ar'));
+        CacheService.setData(
+          key: AppCacheKey.lang,
+          value: context.locale.languageCode.toString(),
+        );
+        // CacheHelper.saveData(key: 'lang', value: context.locale.toString());
+      },
+      icon: SvgPicture.asset(
+        AppIcon.language,
+        colorFilter: ColorFilter.mode(AppColor.white, BlendMode.srcIn),
+      ),
+    );
+  }
 }
